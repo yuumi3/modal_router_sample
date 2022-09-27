@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes, useLocation } from "react-router-dom";
+import { BackgroundLocation } from "./hooks/useModalRoute";
+import Modal from "./components/modal";
+import Next from "./pages/next";
+import Top from "./pages/top";
+import ModalNext from "./pages/modal_next";
+import ModalTop from "./pages/modal_top";
 
-function App() {
+const App = () => {
+  const location = useLocation();
+  const background = (location.state as BackgroundLocation)?.background;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes location={background || location}>
+        <Route path="/next" element={<Next />} />
+        <Route path="/" element={<Top />} />
+      </Routes>
+      {background && (
+        <Routes>
+          <Route path="/" element={<Modal />}>
+            <Route path="/modal-top" element={<ModalTop />} />
+            <Route path="/modal-next" element={<ModalNext />} />
+          </Route>
+        </Routes>
+      )}
+    </>
   );
-}
+};
 
 export default App;
