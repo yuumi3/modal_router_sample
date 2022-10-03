@@ -22,6 +22,7 @@ const useModalRoute = () => {
 
   const endModalPath = () => {
     const background = backgroundLocation.background;
+    setBackgroundLocation({ background: undefined });
     navigate(`${background?.pathname.replace(/\/+$/, "")}/${background?.search}`);
   };
 
@@ -29,7 +30,11 @@ const useModalRoute = () => {
     navigate(to, { state: backgroundLocation });
   };
 
-  return { startModalPath, endModalPath, goModalPath };
+  const isModalOpened = (): boolean => {
+    return Boolean(backgroundLocation.background);
+  };
+
+  return { startModalPath, endModalPath, goModalPath, isModalOpened };
 };
 
 export default useModalRoute;
